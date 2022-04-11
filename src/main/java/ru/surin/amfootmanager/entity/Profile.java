@@ -3,7 +3,10 @@ package ru.surin.amfootmanager.entity;
 import io.jmix.core.DeletePolicy;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
 import io.jmix.core.entity.annotation.OnDeleteInverse;
+import io.jmix.core.metamodel.annotation.Composition;
 import io.jmix.core.metamodel.annotation.JmixEntity;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -16,6 +19,7 @@ import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -23,10 +27,13 @@ import javax.persistence.Version;
 import java.util.Date;
 import java.util.UUID;
 
+@Getter
+@Setter
 @JmixEntity
 @Table(name = "AFM_PROFILE", indexes = {
         @Index(name = "IDX_PROFILE_TEAM_ID", columnList = "TEAM_ID"),
-        @Index(name = "IDX_PROFILE_ROLE_ID", columnList = "ROLE_ID")
+        @Index(name = "IDX_PROFILE_ROLE_ID", columnList = "ROLE"),
+        @Index(name = "IDX_PROFILE_USER_ID", columnList = "USER_ID")
 })
 @Entity(name = "afm_Profile")
 public class Profile {
@@ -35,9 +42,13 @@ public class Profile {
     @Id
     private UUID id;
 
-    @JoinColumn(name = "ROLE_ID")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private ProfileRole role;
+    @Column(name = "ROLE")
+    private String role;
+
+    @JoinColumn(name = "USER_ID", nullable = false, unique = true)
+    @Composition
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    private User user;
 
     @OnDeleteInverse(DeletePolicy.UNLINK)
     @JoinColumn(name = "TEAM_ID")
@@ -66,67 +77,11 @@ public class Profile {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
-    public ProfileRole getRole() {
-        return role;
+    public User getUser() {
+        return user;
     }
 
-    public void setRole(ProfileRole role) {
-        this.role = role;
-    }
-
-    public Team getTeam() {
-        return team;
-    }
-
-    public void setTeam(Team team) {
-        this.team = team;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Date getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public void setLastModifiedDate(Date lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
-    }
-
-    public String getLastModifiedBy() {
-        return lastModifiedBy;
-    }
-
-    public void setLastModifiedBy(String lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -1,15 +1,28 @@
 package ru.surin.amfootmanager.entity;
 
+import io.jmix.core.DeletePolicy;
 import io.jmix.core.HasTimeZone;
 import io.jmix.core.annotation.Secret;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
+import io.jmix.core.entity.annotation.OnDeleteInverse;
 import io.jmix.core.entity.annotation.SystemLevel;
+import io.jmix.core.metamodel.annotation.Composition;
 import io.jmix.core.metamodel.annotation.DependsOnProperties;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 import io.jmix.security.authentication.JmixUserDetails;
 import org.springframework.security.core.GrantedAuthority;
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
 import javax.validation.constraints.Email;
 import java.util.Collection;
 import java.util.Collections;
@@ -18,14 +31,21 @@ import java.util.UUID;
 @JmixEntity
 @Entity(name = "afm_User")
 @Table(name = "AFM_USER", indexes = {
-        @Index(name = "IDX_AFM_USER_ON_USERNAME", columnList = "USERNAME", unique = true)
+        @Index(name = "IDX_AFM_USER_ON_USERNAME", columnList = "USERNAME", unique = true),
+        @Index(name = "IDX_USER_PROFILE_ID", columnList = "PROFILE_ID")
 })
 public class User implements JmixUserDetails, HasTimeZone {
 
     @Id
-    @Column(name = "ID")
+    @Column(name = "ID", nullable = false)
     @JmixGeneratedValue
     private UUID id;
+
+    @OnDeleteInverse(DeletePolicy.CASCADE)
+    @JoinColumn(name = "PROFILE_ID", unique = true)
+    @Composition
+    @OneToOne(fetch = FetchType.LAZY)
+    private Profile profile;
 
     @Version
     @Column(name = "VERSION", nullable = false)
@@ -57,6 +77,14 @@ public class User implements JmixUserDetails, HasTimeZone {
 
     @Transient
     protected Collection<? extends GrantedAuthority> authorities;
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+    }
 
     public UUID getId() {
         return id;
