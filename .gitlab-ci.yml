@@ -1,0 +1,25 @@
+stages:
+  - build_and_push
+
+build:
+  stage: build_and_push
+  tags:
+    - amfoot
+  script:
+    - DOCKER_TAG=$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID
+    - chmod +x gradlew
+    - ./gradlew clean bootBuildImage --imageName=$DOCKER_REPO/$IMAGE_NAME:$DOCKER_TAG
+  only:
+    - main
+
+push:
+  stage: build_and_push
+  tags:
+    - amfoot
+  script:
+    - DOCKER_TAG=$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID
+    - docker login --username=$DOCKER_REPO_USER --password=$DOCKER_REPO_PASS
+    - docker push $DOCKER_REPO/$IMAGE_NAME:$DOCKER_TAG
+    - docker rmi $DOCKER_REPO/$IMAGE_NAME:$DOCKER_TAG
+  only:
+    - main
