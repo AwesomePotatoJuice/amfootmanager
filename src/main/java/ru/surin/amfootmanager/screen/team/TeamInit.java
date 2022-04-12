@@ -1,10 +1,8 @@
 package ru.surin.amfootmanager.screen.team;
 
 import io.jmix.core.DataManager;
-import io.jmix.core.FetchPlans;
 import io.jmix.core.security.CurrentAuthentication;
 import io.jmix.ui.ScreenBuilders;
-import io.jmix.ui.model.InstanceContainer;
 import io.jmix.ui.screen.EditedEntityContainer;
 import io.jmix.ui.screen.OpenMode;
 import io.jmix.ui.screen.StandardEditor;
@@ -33,11 +31,9 @@ public class TeamInit extends StandardEditor<Team> {
         if (user.getProfile() != null && user.getProfile().getTeam() != null) {
             final TeamEdit teamEdit = screenBuilders.editor(Team.class, this)
                     .withScreenClass(TeamEdit.class)
-                    .withOpenMode(OpenMode.DIALOG)
                     .editEntity(user.getProfile().getTeam())
                     .build();
             teamEdit.show();
-            teamEdit.addAfterCloseListener(afterCloseEvent -> this.closeWithDiscard());
         } else {
             final Team team = dataManager.create(Team.class);
             final TeamCreate teamCreate = screenBuilders.editor(Team.class, this)
@@ -46,7 +42,21 @@ public class TeamInit extends StandardEditor<Team> {
                     .editEntity(team)
                     .build();
             teamCreate.show();
-            teamCreate.addAfterCloseListener(afterCloseEvent -> this.closeWithDiscard());
+            teamCreate.addAfterCloseListener(afterCloseEvent -> {
+                final TeamEdit teamEdit = screenBuilders.editor(Team.class, this)
+                        .withScreenClass(TeamEdit.class)
+                        .editEntity(user.getProfile().getTeam())
+                        .build();
+                teamEdit.show();
+            });
+        }
+    }
+
+    @Subscribe
+    public void onAfterShow(BeforeShowEvent event) {
+        try {
+            this.closeWithDiscard();
+        } catch (Exception ignore) {
         }
     }
 
@@ -57,5 +67,4 @@ public class TeamInit extends StandardEditor<Team> {
         }
         throw new RuntimeException("Something went wrong while getting current user");
     }
-
 }

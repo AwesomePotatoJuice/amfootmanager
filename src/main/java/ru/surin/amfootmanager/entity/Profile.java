@@ -4,7 +4,10 @@ import io.jmix.core.DeletePolicy;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
 import io.jmix.core.entity.annotation.OnDeleteInverse;
 import io.jmix.core.metamodel.annotation.Composition;
+import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
+import liquibase.pro.packaged.R;
+import liquibase.pro.packaged.S;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedBy;
@@ -18,13 +21,17 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -42,12 +49,40 @@ public class Profile {
     @Id
     private UUID id;
 
+    @InstanceName
+    @Column(name = "NAME", nullable = false)
+    private String name;
+
+    @JoinTable(name = "AFM_PROFILE_STATUS_LINK",
+            joinColumns = @JoinColumn(name = "PROFILE_ID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "STATUS_ID", referencedColumnName = "ID"))
+    @ManyToMany
+    private List<Status> status;
+
+    @JoinTable(name = "AFM_PROFILE_POSITION_LINK",
+            joinColumns = @JoinColumn(name = "PROFILE_ID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "POSITION_ID", referencedColumnName = "ID"))
+    @ManyToMany
+    private List<Position> position;
+
+    @Column(name = "DEBT") // OL/C/DL/TE/R/QB/LB/S/RB/Kicker
+    private Double debt;
+
+    @OneToMany(mappedBy = "currentOwner")
+    private List<Equipment> equipment;
+
+    @Column(name = "ATTENDANCE")
+    private String attendance;
+
+    @Column(name = "TRAUMAS")
+    private String traumas;
+
     @Column(name = "ROLE")
     private String role;
 
-    @JoinColumn(name = "USER_ID", nullable = false, unique = true)
+    @JoinColumn(name = "USER_ID", unique = true)
     @Composition
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne(fetch = FetchType.LAZY)
     private User user;
 
     @OnDeleteInverse(DeletePolicy.UNLINK)
@@ -76,6 +111,54 @@ public class Profile {
     @Column(name = "CREATED_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
+
+    public String getTraumas() {
+        return traumas;
+    }
+
+    public void setTraumas(String traumas) {
+        this.traumas = traumas;
+    }
+
+    public String getAttendance() {
+        return attendance;
+    }
+
+    public void setAttendance(String attendance) {
+        this.attendance = attendance;
+    }
+
+    public List<Equipment> getEquipment() {
+        return equipment;
+    }
+
+    public void setEquipment(List<Equipment> equipment) {
+        this.equipment = equipment;
+    }
+
+    public Double getDebt() {
+        return debt;
+    }
+
+    public void setDebt(Double debt) {
+        this.debt = debt;
+    }
+
+    public List<Position> getPosition() {
+        return position;
+    }
+
+    public void setPosition(List<Position> position) {
+        this.position = position;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public User getUser() {
         return user;

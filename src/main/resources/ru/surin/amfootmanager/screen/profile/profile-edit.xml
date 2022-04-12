@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        caption="msg://profileEdit.caption"
+        focusComponent="form">
+    <data>
+        <instance id="profileDc"
+                  class="ru.surin.amfootmanager.entity.Profile">
+            <fetchPlan extends="_base">
+                <property name="status" fetchPlan="_base"/>
+                <property name="position" fetchPlan="_base"/>
+                <property name="equipment" fetchPlan="_base"/>
+                <property name="user" fetchPlan="_base"/>
+                <property name="team" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader/>
+            <instance id="userDc" property="user"/>
+            <collection id="statusDc" property="status"/>
+            <collection id="equipmentDc" property="equipment"/>
+            <collection id="positionDc" property="position"/>
+        </instance>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="windowCommitAndClose" caption="msg:///actions.Ok"
+                icon="EDITOR_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="windowClose"
+                caption="msg:///actions.Close"
+                icon="EDITOR_CANCEL"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout spacing="true" expand="scrollBox">
+        <scrollBox id="scrollBox" spacing="true">
+            <form id="form" dataContainer="profileDc">
+                <column width="350px">
+                    <textField id="nameField" property="name"/>
+                    <textField id="debtField" property="debt"/>
+                    <textField id="attendanceField" property="attendance"/>
+                    <textField id="traumasField" property="traumas"/>
+                    <textField id="roleField" property="role"/>
+                    <entityPicker id="userField" property="user">
+                        <actions>
+                            <action id="entityOpenComposition" type="entity_openComposition"/>
+                            <action id="entityClear" type="entity_clear"/>
+                        </actions>
+                    </entityPicker>
+                    <entityPicker id="teamField" property="team">
+                        <actions>
+                            <action id="entityLookup" type="entity_lookup"/>
+                            <action id="entityClear" type="entity_clear"/>
+                        </actions>
+                    </entityPicker>
+                </column>
+            </form>
+            <groupBox id="statusBox" caption="msg://ru.surin.amfootmanager.entity/Profile.status">
+                <table id="statusTable" dataContainer="statusDc" width="100%" height="200px">
+                    <actions>
+                        <action id="add" type="add"/>
+                        <action id="exclude" type="exclude"/>
+                    </actions>
+                    <columns>
+                        <column id="name"/>
+                    </columns>
+                    <buttonsPanel>
+                        <button action="statusTable.add"/>
+                        <button action="statusTable.exclude"/>
+                    </buttonsPanel>
+                </table>
+            </groupBox>
+            <groupBox id="equipmentBox" caption="msg://ru.surin.amfootmanager.entity/Profile.equipment">
+                <table id="equipmentTable" dataContainer="equipmentDc" width="100%" height="200px">
+                    <actions>
+                        <action id="add" type="add"/>
+                        <action id="exclude" type="exclude"/>
+                    </actions>
+                    <columns>
+                        <column id="name"/>
+                    </columns>
+                    <buttonsPanel>
+                        <button action="equipmentTable.add"/>
+                        <button action="equipmentTable.exclude"/>
+                    </buttonsPanel>
+                </table>
+            </groupBox>
+            <groupBox id="positionBox" caption="msg://ru.surin.amfootmanager.entity/Profile.position">
+                <table id="positionTable" dataContainer="positionDc" width="100%" height="200px">
+                    <actions>
+                        <action id="add" type="add"/>
+                        <action id="exclude" type="exclude"/>
+                    </actions>
+                    <columns>
+                        <column id="name"/>
+                    </columns>
+                    <buttonsPanel>
+                        <button action="positionTable.add"/>
+                        <button action="positionTable.exclude"/>
+                    </buttonsPanel>
+                </table>
+            </groupBox>
+        </scrollBox>
+        <hbox id="editActions" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>

@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <menu-config xmlns="http://jmix.io/schema/ui/menu">
 
-    <menu id="myTeamManagement" caption="msg://ru.surin.amfootmanager/menu.myTeamManagement" insertBefore="administration">
+    <menu id="myTeamManagement" caption="msg://ru.surin.amfootmanager/menu.myTeamManagement" insertBefore="handbook">
         <item screen="afm_Team.init" caption="msg://ru.surin.amfootmanager.screen.team/teamEdit.caption"/>
+        <item screen="afm_Team.browse" caption="msg://ru.surin.amfootmanager.screen.team/teamBrowse.menu"/>
+        <item screen="afm_Equipment.browse"
+              caption="msg://ru.surin.amfootmanager.screen.Equipment/EquipmentBrowse.menu"/>
+    </menu>
+    <menu id="handbook" caption="msg://ru.surin.amfootmanager/menu.handbook" insertBefore="application">
+        <item screen="afm_Position.browse" caption="msg://ru.surin.amfootmanager.screen.position/positionBrowse.menu"/>
+        <item screen="afm_Status.browse" caption="msg://ru.surin.amfootmanager.screen.status/statusBrowse.menu"/>
     </menu>
     <menu id="application" caption="msg://ru.surin.amfootmanager/menu.application" insertBefore="administration">
         <item screen="afm_User.browse" caption="msg://ru.surin.amfootmanager.screen.user/UserBrowse.caption"/>

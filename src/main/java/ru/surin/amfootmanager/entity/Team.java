@@ -11,11 +11,13 @@ import org.springframework.data.annotation.LastModifiedDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -28,6 +30,9 @@ public class Team {
     @Column(name = "ID", nullable = false)
     @Id
     private UUID id;
+
+    @OneToMany(mappedBy = "team")
+    private List<Profile> profiles;
 
     @InstanceName
     @Column(name = "NAME")
