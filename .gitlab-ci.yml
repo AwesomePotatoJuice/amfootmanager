@@ -30,12 +30,14 @@ failure_notify:
   stage: build_and_push
   script:
   - DOCKER_TAG=$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID
-  - curl --header 'Content-Type: application/json' --request 'POST' --data '{"chat_id":"-1001570539361","text":"Pipeline status: failed, please check '${CI_PIPELINE_URL}'"}' "https://api.telegram.org/bot5293863427:AAFhfUMZt382UTHi-qej8OYkjKgOBqShm3M/sendMessage" 
+  - |
+    curl --header 'Content-Type: application/json' --request 'POST' --data '{"chat_id":"-1001570539361","text":"Pipeline status: failed, please check '${CI_PIPELINE_URL}'"}' "https://api.telegram.org/bot5293863427:AAFhfUMZt382UTHi-qej8OYkjKgOBqShm3M/sendMessage" 
   when: on_failure
   
 success_notify:
   stage: build_and_push
   script:
   - DOCKER_TAG=$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID
-  - curl --header 'Content-Type: application/json' --request 'POST' --data '{"chat_id":"-1001570539361","text":"Pipeline status: succes, docker tag '${DOCKER_TAG}'"}' "https://api.telegram.org/bot5293863427:AAFhfUMZt382UTHi-qej8OYkjKgOBqShm3M/sendMessage" 
+  - |
+    curl --header 'Content-Type: application/json' --request 'POST' --data '{"chat_id":"-1001570539361","text":"Pipeline status: succes, docker tag '${DOCKER_TAG}'"}' "https://api.telegram.org/bot5293863427:AAFhfUMZt382UTHi-qej8OYkjKgOBqShm3M/sendMessage" 
   when: on_success
