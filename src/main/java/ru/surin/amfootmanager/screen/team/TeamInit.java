@@ -20,44 +20,33 @@ import ru.surin.amfootmanager.entity.User;
 @UiDescriptor("team-init.xml")
 @EditedEntityContainer("teamDc")
 public class TeamInit extends StandardEditor<Team> {
-
-    @Autowired
-    private InstanceContainer<Team> teamDc;
     @Autowired
     private CurrentAuthentication currentAuthentication;
     @Autowired
     private ScreenBuilders screenBuilders;
     @Autowired
     private DataManager dataManager;
-    @Autowired
-    private FetchPlans fetchPlans;
 
     @Subscribe
     public void onInit(InitEvent event) {
         User user = getCurrentUser();
         if (user.getProfile() != null && user.getProfile().getTeam() != null) {
-            setEntityToEdit(user.getProfile().getTeam());
+            final TeamEdit teamEdit = screenBuilders.editor(Team.class, this)
+                    .withScreenClass(TeamEdit.class)
+                    .withOpenMode(OpenMode.DIALOG)
+                    .editEntity(user.getProfile().getTeam())
+                    .build();
+            teamEdit.show();
+            teamEdit.addAfterCloseListener(afterCloseEvent -> this.closeWithDiscard());
         } else {
             final Team team = dataManager.create(Team.class);
-            final TeamCreate build = screenBuilders.editor(Team.class, this)
+            final TeamCreate teamCreate = screenBuilders.editor(Team.class, this)
                     .withScreenClass(TeamCreate.class)
                     .withOpenMode(OpenMode.DIALOG)
                     .editEntity(team)
                     .build();
-            build.addAfterCloseListener(afterCloseEvent -> {
-                this.closeWithDiscard();
-//                if (afterCloseEvent.getCloseAction().equals(WINDOW_COMMIT_AND_CLOSE_ACTION)) {
-//                    setEntityToEdit(dataManager.load(Team.class)
-//                            .id(team.getId())
-//                            .fetchPlan(fetchPlans.builder(Team.class)
-//                                    .addFetchPlan("_base")
-//                                    .build())
-//                            .one());
-//                } else {
-//                    this.closeWithDiscard();
-//                }
-            });
-            build.show();
+            teamCreate.show();
+            teamCreate.addAfterCloseListener(afterCloseEvent -> this.closeWithDiscard());
         }
     }
 
