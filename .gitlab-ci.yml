@@ -28,6 +28,8 @@ push:
 
 failure_notify:
   stage: build_and_push
+  tags:
+    - amfoot
   script:
   - DOCKER_TAG=$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID
   - |
@@ -36,6 +38,8 @@ failure_notify:
   
 success_notify:
   stage: build_and_push
+  tags:
+    - amfoot
   script:
   - DOCKER_TAG=$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID
   - |
