@@ -27,12 +27,17 @@ public class TeamInit extends StandardEditor<Team> {
 
     @Subscribe
     public void onInit(InitEvent event) {
+    }
+
+    @Subscribe
+    public void onAfterShow(BeforeShowEvent event) {
         User user = getCurrentUser();
         if (user.getProfile() != null && user.getProfile().getTeam() != null) {
             final TeamEdit teamEdit = screenBuilders.editor(Team.class, this)
                     .withScreenClass(TeamEdit.class)
                     .editEntity(user.getProfile().getTeam())
                     .build();
+            teamEdit.addAfterShowListener(afterShowEvent -> closeWithDiscard());
             teamEdit.show();
         } else {
             final Team team = dataManager.create(Team.class);
@@ -47,16 +52,9 @@ public class TeamInit extends StandardEditor<Team> {
                         .withScreenClass(TeamEdit.class)
                         .editEntity(user.getProfile().getTeam())
                         .build();
+                teamEdit.addAfterShowListener(afterShowEvent -> closeWithDiscard());
                 teamEdit.show();
             });
-        }
-    }
-
-    @Subscribe
-    public void onAfterShow(BeforeShowEvent event) {
-        try {
-            this.closeWithDiscard();
-        } catch (Exception ignore) {
         }
     }
 

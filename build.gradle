@@ -41,6 +41,9 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
     implementation("org.postgresql:postgresql")
+
+    //Gson lib
+    implementation 'com.google.code.gson:gson:2.8.9'
 }
 
 test {
