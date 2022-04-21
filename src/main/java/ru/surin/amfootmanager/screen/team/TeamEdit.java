@@ -7,4 +7,5 @@ import ru.surin.amfootmanager.entity.Team;
 @UiDescriptor("team-edit.xml")
 @EditedEntityContainer("teamDc")
 public class TeamEdit extends StandardEditor<Team> {
+
 }

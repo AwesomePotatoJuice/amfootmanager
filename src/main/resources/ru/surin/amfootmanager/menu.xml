@@ -6,10 +6,14 @@
         <item screen="afm_Team.browse" caption="msg://ru.surin.amfootmanager.screen.team/teamBrowse.menu"/>
         <item screen="afm_Equipment.browse"
               caption="msg://ru.surin.amfootmanager.screen.Equipment/EquipmentBrowse.menu"/>
+        <item screen="afm_PlayerCard.browse"
+              caption="msg://ru.surin.amfootmanager.screen.playercard/playerCardBrowse.menu"/>
+        <item screen="afm_Profile.browse" caption="msg://ru.surin.amfootmanager.screen.profile/profileBrowse.menu"/>
     </menu>
     <menu id="handbook" caption="msg://ru.surin.amfootmanager/menu.handbook" insertBefore="application">
         <item screen="afm_Position.browse" caption="msg://ru.surin.amfootmanager.screen.position/positionBrowse.menu"/>
         <item screen="afm_Status.browse" caption="msg://ru.surin.amfootmanager.screen.status/statusBrowse.menu"/>
+        <item screen="afm_GameType.browse" caption="msg://ru.surin.amfootmanager.screen.gametype/gameTypeBrowse.menu"/>
     </menu>
     <menu id="application" caption="msg://ru.surin.amfootmanager/menu.application" insertBefore="administration">
         <item screen="afm_User.browse" caption="msg://ru.surin.amfootmanager.screen.user/UserBrowse.caption"/>
