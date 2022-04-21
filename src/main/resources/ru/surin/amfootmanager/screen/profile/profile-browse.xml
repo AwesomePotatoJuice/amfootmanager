@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        xmlns:c="http://jmix.io/schema/ui/jpql-condition"
+        caption="msg://profileBrowse.caption"
+        focusComponent="profilesTable">
+    <data readOnly="true">
+        <collection id="profilesDc"
+                    class="ru.surin.amfootmanager.entity.Profile">
+            <fetchPlan extends="_base">
+                <property name="status" fetchPlan="_base"/>
+                <property name="position" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="profilesDl">
+                <query>
+                    <![CDATA[select e from afm_Profile e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="lookupSelectAction"
+                caption="msg:///actions.Select"
+                icon="LOOKUP_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="lookupCancelAction"
+                caption="msg:///actions.Cancel"
+                icon="LOOKUP_CANCEL"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="profilesTable" spacing="true">
+        <filter id="filter"
+                dataLoader="profilesDl">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="profilesTable"
+                    width="100%"
+                    dataContainer="profilesDc">
+            <actions>
+                <action id="create" type="create"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+            </actions>
+            <columns>
+                <column id="name"/>
+                <column id="debt"/>
+                <column id="attendance"/>
+                <column id="traumas"/>
+                <column id="role"/>
+            </columns>
+            <simplePagination/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn" action="profilesTable.create"/>
+                <button id="editBtn" action="profilesTable.edit"/>
+                <button id="removeBtn" action="profilesTable.remove"/>
+            </buttonsPanel>
+        </groupTable>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>

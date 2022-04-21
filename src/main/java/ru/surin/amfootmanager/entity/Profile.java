@@ -6,8 +6,6 @@ import io.jmix.core.entity.annotation.OnDeleteInverse;
 import io.jmix.core.metamodel.annotation.Composition;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
-import liquibase.pro.packaged.R;
-import liquibase.pro.packaged.S;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedBy;
@@ -65,7 +63,7 @@ public class Profile {
     @ManyToMany
     private List<Position> position;
 
-    @Column(name = "DEBT") // OL/C/DL/TE/R/QB/LB/S/RB/Kicker
+    @Column(name = "DEBT")
     private Double debt;
 
     @OneToMany(mappedBy = "currentOwner")
@@ -111,6 +109,16 @@ public class Profile {
     @Column(name = "CREATED_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "profile")
+    private PlayerCard playerCard;
+
+    public PlayerCard getPlayerCard() {
+        return playerCard;
+    }
+
+    public void setPlayerCard(PlayerCard playerCard) {
+        this.playerCard = playerCard;
+    }
 
     public String getTraumas() {
         return traumas;
@@ -142,14 +150,6 @@ public class Profile {
 
     public void setDebt(Double debt) {
         this.debt = debt;
-    }
-
-    public List<Position> getPosition() {
-        return position;
-    }
-
-    public void setPosition(List<Position> position) {
-        this.position = position;
     }
 
     public String getName() {
