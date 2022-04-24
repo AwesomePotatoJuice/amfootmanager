@@ -24,7 +24,7 @@ import java.util.UUID;
 @Table(name = "AFM_PROFILE", indexes = {
         @Index(name = "IDX_PROFILE_TEAM_ID", columnList = "TEAM_ID"),
         @Index(name = "IDX_PROFILE_ROLE_ID", columnList = "ROLE"),
-        @Index(name = "IDX_PROFILE_USER_ID", columnList = "USER_ID")
+        @Index(name = "IDX_PROFILE_USER_ID", columnList = "USER_ID", unique = true)
 })
 @Entity(name = "afm_Profile")
 public class Profile {
