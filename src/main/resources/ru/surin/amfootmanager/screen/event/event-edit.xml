@@ -5,7 +5,9 @@
     <data>
         <instance id="eventDc"
                   class="ru.surin.amfootmanager.entity.Event">
-            <fetchPlan extends="_base"/>
+            <fetchPlan extends="_base">
+                <property name="team" fetchPlan="_base"/>
+            </fetchPlan>
             <loader/>
         </instance>
     </data>
@@ -15,7 +17,7 @@
     </facets>
     <actions>
         <action id="windowCommitAndClose" caption="msg:///actions.Ok"
-                icon="font-icon:_500PX"
+                icon="EDITOR_OK"
                 primary="true"
                 shortcut="${COMMIT_SHORTCUT}"/>
         <action id="windowClose"
@@ -27,9 +29,11 @@
     <layout spacing="true" expand="editActions">
         <form id="form" dataContainer="eventDc">
             <column width="350px">
-                <textField id="nameField" property="name"/>
-                <dateField id="dateField" property="date"/>
-                <textField id="descriptionField" property="description"/>
+                <textField id="trainingProgramField" property="trainingProgram"/>
+                <textField id="topicField" property="topic"/>
+                <dateField id="startDateField" property="startDate"/>
+                <timeField id="durationField" property="duration"/>
+                <entityPicker id="teamField" property="team"/>
             </column>
         </form>
         <hbox id="editActions" spacing="true">

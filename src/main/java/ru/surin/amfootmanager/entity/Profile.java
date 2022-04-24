@@ -13,21 +13,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Version;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -38,7 +24,7 @@ import java.util.UUID;
 @Table(name = "AFM_PROFILE", indexes = {
         @Index(name = "IDX_PROFILE_TEAM_ID", columnList = "TEAM_ID"),
         @Index(name = "IDX_PROFILE_ROLE_ID", columnList = "ROLE"),
-        @Index(name = "IDX_PROFILE_USER_ID", columnList = "USER_ID")
+        @Index(name = "IDX_PROFILE_USER_ID", columnList = "USER_ID", unique = true)
 })
 @Entity(name = "afm_Profile")
 public class Profile {

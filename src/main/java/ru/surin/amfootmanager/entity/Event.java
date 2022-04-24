@@ -1,36 +1,18 @@
 package ru.surin.amfootmanager.entity;
 
-import io.jmix.core.DeletePolicy;
-import io.jmix.core.annotation.DeletedBy;
-import io.jmix.core.annotation.DeletedDate;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
-import io.jmix.core.entity.annotation.OnDelete;
-import io.jmix.core.entity.annotation.OnDeleteInverse;
-import io.jmix.core.metamodel.annotation.DependsOnProperties;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Version;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.UUID;
 
 @JmixEntity
 @Table(name = "AFM_EVENT", indexes = {
-        @Index(name = "IDX_EVENT_GAME_TYPE_ID", columnList = "GAME_TYPE_ID")
+        @Index(name = "IDX_EVENT_TEAM_ID", columnList = "TEAM_ID")
 })
 @Entity(name = "afm_Event")
 public class Event {
@@ -39,139 +21,78 @@ public class Event {
     @Id
     private UUID id;
 
-    @Column(name = "NAME")
-    private String name;
+    @NotNull
+    @Column(name = "TOPIC")
+    private String topic;
 
-    @Column(name = "DATE_")
+    @NotNull
+    @Column(name = "TRAINING_PROGRAM")
+    private String trainingProgram;
+
+    @InstanceName
+    @Column(name = "START_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private Date date;
+    @NotNull
+    private Date startDate;
 
-    @Column(name = "DESCRIPTION")
-    private String description;
+    @Column(name = "END_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date endDate;
 
-    @OnDeleteInverse(DeletePolicy.UNLINK)
-    @OnDelete(DeletePolicy.UNLINK)
-    @JoinColumn(name = "GAME_TYPE_ID")
+    @Temporal(TemporalType.TIME)
+    @Column(name = "DURATION")
+    private Date duration;
+
+    @JoinColumn(name = "TEAM_ID")
     @ManyToOne(fetch = FetchType.LAZY)
-    private GameType gameType;
+    private Team team;
 
-    @Column(name = "VERSION", nullable = false)
-    @Version
-    private Integer version;
-
-    @CreatedBy
-    @Column(name = "CREATED_BY")
-    private String createdBy;
-
-    @CreatedDate
-    @Column(name = "CREATED_DATE")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdDate;
-
-    @LastModifiedBy
-    @Column(name = "LAST_MODIFIED_BY")
-    private String lastModifiedBy;
-
-    @LastModifiedDate
-    @Column(name = "LAST_MODIFIED_DATE")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date lastModifiedDate;
-
-    @DeletedBy
-    @Column(name = "DELETED_BY")
-    private String deletedBy;
-
-    @DeletedDate
-    @Column(name = "DELETED_DATE")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date deletedDate;
-
-    public GameType getGameType() {
-        return gameType;
+    public Team getTeam() {
+        return team;
     }
 
-    public void setGameType(GameType gameType) {
-        this.gameType = gameType;
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
-    public String getDescription() {
-        return description;
+    public void setDuration(Date duration) {
+        this.duration = duration;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public Date getDuration() {
+        return duration;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getEndDate() {
+        return endDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
-    public String getName() {
-        return name;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
-    public Date getDeletedDate() {
-        return deletedDate;
+    public String getTrainingProgram() {
+        return trainingProgram;
     }
 
-    public void setDeletedDate(Date deletedDate) {
-        this.deletedDate = deletedDate;
+    public void setTrainingProgram(String trainingProgram) {
+        this.trainingProgram = trainingProgram;
     }
 
-    public String getDeletedBy() {
-        return deletedBy;
+    public String getTopic() {
+        return topic;
     }
 
-    public void setDeletedBy(String deletedBy) {
-        this.deletedBy = deletedBy;
-    }
-
-    public Date getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public void setLastModifiedDate(Date lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
-    }
-
-    public String getLastModifiedBy() {
-        return lastModifiedBy;
-    }
-
-    public void setLastModifiedBy(String lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
+    public void setTopic(String topic) {
+        this.topic = topic;
     }
 
     public UUID getId() {
@@ -182,9 +103,13 @@ public class Event {
         this.id = id;
     }
 
-    @InstanceName
-    @DependsOnProperties({"name", "date"})
-    public String getInstanceName() {
-        return String.format("%s %s", name, date);
+
+    @PrePersist
+    @PreUpdate
+    public void preUpdatingEndDate() {
+        endDate = calculatedEndTime(startDate, duration);
+    }
+    public static Date calculatedEndTime(Date startDate, Date duration){
+        return Date.from(startDate.toInstant().plus(duration.getHours(), ChronoUnit.HOURS).plus(duration.getMinutes(),ChronoUnit.MINUTES));
     }
 }
