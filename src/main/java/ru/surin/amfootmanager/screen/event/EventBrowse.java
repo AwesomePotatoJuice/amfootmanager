@@ -24,5 +24,5 @@ public class EventBrowse extends StandardLookup<Event> {
                 );
         screen.show();
     }
-    
+
 }
