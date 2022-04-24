@@ -6,9 +6,7 @@ import io.jmix.core.metamodel.annotation.JmixEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAmount;
 import java.util.Date;
 import java.util.UUID;
 
@@ -27,17 +25,19 @@ public class Event {
     @Column(name = "TOPIC")
     private String topic;
 
-    @Column(name = "BASE_")
-    private String base;
-
     @NotNull
+    @Column(name = "TRAINING_PROGRAM")
+    private String trainingProgram;
+
     @InstanceName
     @Column(name = "START_DATE", nullable = false)
-    private LocalDateTime startDate;
-
+    @Temporal(TemporalType.TIMESTAMP)
     @NotNull
-    @Column(name = "END_DATE", nullable = false)
-    private LocalDateTime endDate;
+    private Date startDate;
+
+    @Column(name = "END_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date endDate;
 
     @Temporal(TemporalType.TIME)
     @Column(name = "DURATION")
@@ -47,6 +47,14 @@ public class Event {
     @ManyToOne(fetch = FetchType.LAZY)
     private Team team;
 
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
     public void setDuration(Date duration) {
         this.duration = duration;
     }
@@ -55,37 +63,28 @@ public class Event {
         return duration;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDateTime getStartDate() {
-        return startDate;
-    }
-
-    public void setEndDate(LocalDateTime endDate) {
-        this.endDate = endDate;
-    }
-
-    public LocalDateTime getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-
-    public String getBase() {
-        return base;
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
-    public void setBase(String base) {
-        this.base = base;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public Team getTeam() {
-        return team;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
-    public void setTeam(Team team) {
-        this.team = team;
+    public String getTrainingProgram() {
+        return trainingProgram;
+    }
+
+    public void setTrainingProgram(String trainingProgram) {
+        this.trainingProgram = trainingProgram;
     }
 
     public String getTopic() {
@@ -110,8 +109,7 @@ public class Event {
     public void preUpdatingEndDate() {
         endDate = calculatedEndTime(startDate, duration);
     }
-    public static LocalDateTime calculatedEndTime(LocalDateTime startDate, Date duration){
-        return startDate.plusHours(duration.getHours()).plusMinutes(duration.getMinutes());
+    public static Date calculatedEndTime(Date startDate, Date duration){
+        return Date.from(startDate.toInstant().plus(duration.getHours(), ChronoUnit.HOURS).plus(duration.getMinutes(),ChronoUnit.MINUTES));
     }
-
 }
