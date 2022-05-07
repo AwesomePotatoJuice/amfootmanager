@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://jmix.io/schema/ui/window"
-        caption="msg://eventEdit.caption"
+        caption="msg://matchEdit.caption"
         focusComponent="form">
     <data>
-        <instance id="eventDc"
-                  class="ru.surin.amfootmanager.entity.Event">
+        <instance id="matchDc"
+                  class="ru.surin.amfootmanager.entity.Match">
             <fetchPlan extends="_base">
-                <property name="team" fetchPlan="_base"/>
+                <property fetchPlan="_base" name="team"/>
+                <property name="opponent" fetchPlan="_base"/>
             </fetchPlan>
             <loader/>
         </instance>
@@ -27,13 +28,25 @@
     <dialogMode height="600"
                 width="800"/>
     <layout spacing="true" expand="editActions">
-        <form id="form" dataContainer="eventDc">
+        <form id="form" dataContainer="matchDc">
             <column width="350px">
                 <textField id="topicField" property="topic"/>
+                <textField id="baseField" property="base"/>
                 <dateField id="startDateField" property="startDate"/>
                 <timeField id="durationField" property="duration"/>
-                <textField id="baseField" property="base"/>
-                <entityPicker id="teamField" property="team"/>
+                <entityPicker id="teamField" property="team">
+                    <actions>
+                        <action id="entityLookup" type="entity_lookup"/>
+                        <action id="entityClear" type="entity_clear"/>
+                    </actions>
+                </entityPicker>
+                <entityPicker id="opponentField" property="opponent">
+                    <actions>
+                        <action id="entity_lookup" type="entity_lookup"/>
+                        <action id="entity_clear" type="entity_clear"/>
+                    </actions>
+                </entityPicker>
+                <textField id="scoreField" property="score"/>
             </column>
         </form>
         <hbox id="editActions" spacing="true">
