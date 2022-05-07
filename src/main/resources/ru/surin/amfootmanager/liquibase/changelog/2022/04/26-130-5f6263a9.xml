@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="afm">
+        <addColumn tableName="AFM_EVENT">
+            <column name="BASE_" type="VARCHAR(255)"/>
+            <column name="DELETED_BY" type="VARCHAR(255)"/>
+            <column name="DELETED_DATE" type="DATETIME"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="2" author="afm">
+        <addColumn tableName="AFM_EVENT">
+            <column name="DTYPE" type="VARCHAR(31)"/>
+        </addColumn>
+
+        <update tableName="AFM_EVENT">
+            <column name="DTYPE" value="afm_Event"/>
+            <where>DTYPE is null</where>
+        </update>
+    </changeSet>
+    <changeSet id="3" author="afm">
+        <addColumn tableName="AFM_EVENT">
+            <column name="OPPONENT_ID" type="UUID"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="4" author="afm">
+        <createIndex indexName="IDX_MATCH_OPPONENT_ID" tableName="AFM_EVENT">
+            <column name="OPPONENT_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="OPPONENT_ID" baseTableName="AFM_EVENT"
+                                 constraintName="FK_AFM_EVENT_ON_OPPONENT" referencedColumnNames="ID"
+                                 referencedTableName="AFM_TEAM"/>
+    </changeSet>
+    <changeSet id="5" author="afm">
+        <addNotNullConstraint columnDataType="VARCHAR(255)" columnName="TRAINING_PROGRAM" tableName="AFM_EVENT"
+                              validate="true"/>
+    </changeSet>
+</databaseChangeLog>

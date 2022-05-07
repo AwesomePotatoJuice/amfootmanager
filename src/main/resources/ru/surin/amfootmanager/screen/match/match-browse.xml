@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        xmlns:c="http://jmix.io/schema/ui/jpql-condition"
+        caption="msg://matchBrowse.caption"
+        focusComponent="matchesTable">
+    <data readOnly="true">
+        <collection id="matchesDc"
+                    class="ru.surin.amfootmanager.entity.Match">
+            <fetchPlan extends="_base">
+                <property fetchPlan="_base" name="team"/>
+                <property name="opponent" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="matchesDl">
+                <query>
+                    <![CDATA[select e from afm_Match e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="lookupSelectAction"
+                caption="msg:///actions.Select"
+                icon="LOOKUP_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="lookupCancelAction"
+                caption="msg:///actions.Cancel"
+                icon="LOOKUP_CANCEL"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="matchesTable" spacing="true">
+        <filter id="filter"
+                dataLoader="matchesDl">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="matchesTable"
+                    width="100%"
+                    dataContainer="matchesDc">
+            <actions>
+                <action id="create" type="create"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+            </actions>
+            <columns>
+                <column id="topic"/>
+                <column id="base"/>
+                <column id="startDate"/>
+                <column id="duration"/>
+                <column id="team"/>
+                <column id="opponent"/>
+                <column id="score"/>
+            </columns>
+            <simplePagination/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn" action="matchesTable.create"/>
+                <button id="editBtn" action="matchesTable.edit"/>
+                <button id="removeBtn" action="matchesTable.remove"/>
+            </buttonsPanel>
+        </groupTable>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>
