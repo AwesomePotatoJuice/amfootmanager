@@ -15,6 +15,19 @@
                 </query>
             </loader>
         </collection>
+        <collection id="eventsCalendarDc"
+                    class="ru.surin.amfootmanager.entity.Event">
+            <loader id="eventsCalendarDl">
+                <query>
+                    <![CDATA[select e from afm_Event e where e.startDate >= :startDate and e.endDate <= :endDate]]>
+                    <condition>
+                        <c:jpql>
+                            <c:where>e.type in :type</c:where>
+                        </c:jpql>
+                    </condition>
+                </query>
+            </loader>
+        </collection>
     </data>
     <facets>
         <dataLoadCoordinator auto="true"/>
@@ -29,6 +42,8 @@
         <action id="lookupCancelAction"
                 caption="msg:///actions.Cancel"
                 icon="LOOKUP_CANCEL"/>
+        <action id="trainingCreate" caption="Create training"/>
+        <action id="matchCreate" caption="Create match"/>
     </actions>
     <dialogMode height="600"
                 width="800"/>
@@ -37,12 +52,60 @@
                 dataLoader="eventsDl">
             <properties include=".*"/>
         </filter>
+        <buttonsPanel alwaysVisible="true" id="eventCreateBtnPanel">
 
+            <popupButton id="creatingPop" caption="create event">
+                <actions>
+                    <action id="trainingCreate" caption="Create training"/>
+                    <action id="matchCreate" caption="Create match"/>
+                </actions>
+            </popupButton>
+        </buttonsPanel>
         <tabSheet width="100%" id="eventsTabSheet">
+            <tab caption="Events Calendar"
+                 id="calendarTab"
+                 spacing="true"
+                 expand="calendar"
+                 icon="CALENDAR">
+                <buttonsPanel id="calendarModePanel" margin="false" spacing="false" height="AUTO">
+                    <radioButtonGroup
+                            width="100%"
+                            orientation="horizontal"
+                            stylename="button-switcher"
+                            optionsEnum="ru.surin.amfootmanager.screen.event.calendar.CalendarMode"
+                            id="calendarMode"
+                            height="AUTO" descriptionAsHtml="true"/>
+                    <button id="navigatorPrevious"
+                            stylename="borderless-colored"
+                            icon="CARET_LEFT"/>
+                    <button id="navigatorCurrent"
+                            stylename="borderless-colored"
+                            icon="HOME"/>
+                    <button id="navigatorNext"
+                            stylename="borderless-colored"
+                            icon="CARET_RIGHT"/>
+                </buttonsPanel>
+                <label id="calendarTitle"
+                       stylename="h3"
+                       align="MIDDLE_CENTER"
+                       width="200px" visible="false"/>
+                <calendar id="calendar"
+                          dataContainer="eventsDc"
+                          endDateProperty="endDate"
+                          startDateProperty="startDate"
+                          captionProperty="topic"
+                          navigationButtonsVisible="true"
+                          weeklyCaptionFormat="dd-MM-yyyy">
+
+                </calendar>
+                <datePicker id="calendarNavigator"
+                            datatype="localDate"
+                            width="100%"
+                            visible="false"/>
+            </tab>
             <tab caption="Events Table" id="tableTab" spacing="true" icon="TABLE">
                 <groupTable id="eventsTable"
-                                    width="100%"
-                                    dataContainer="eventsDc">
+                            dataContainer="eventsDc" height="100%">
                     <actions>
                         <action id="create" type="create"/>
                         <action id="edit" type="edit"/>
@@ -50,35 +113,21 @@
                     </actions>
                     <columns>
                         <column id="topic"/>
-                        <column id="trainingProgram"/>
                         <column id="team"/>
+                        <column id="base"/>
                         <column id="startDate"/>
                         <column id="duration"/>
+                        <column id="endDate"/>
                     </columns>
                     <buttonsPanel id="buttonsPanel"
                                   alwaysVisible="true">
                         <button id="createBtn" action="eventsTable.create"/>
                         <button id="editBtn" action="eventsTable.edit"/>
                         <button id="removeBtn" action="eventsTable.remove"/>
+                        <button/>
                     </buttonsPanel>
                     <simplePagination/>
                 </groupTable>
-            </tab>
-            <tab caption="Events Calendar"
-                     id="calendarTab"
-                     spacing="true"
-                     expand="calendar"
-                     icon="CALENDAR">
-                <calendar id="calendar"
-                          dataContainer="eventsDc"
-                          endDateProperty="endDate"
-                          startDateProperty="startDate"
-                          captionProperty="topic"
-                          descriptionProperty="trainingProgram"
-                          navigationButtonsVisible="true"
-                          startDate="2022-04-01"
-                          endDate="2022-04-30"/>
-                <simplePagination/>
             </tab>
         </tabSheet>
         <hbox id="lookupActions" spacing="true" visible="false">
