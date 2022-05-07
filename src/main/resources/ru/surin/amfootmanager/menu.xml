@@ -7,6 +7,8 @@
         <item screen="afm_Equipment.browse"
               caption="msg://ru.surin.amfootmanager.screen.Equipment/EquipmentBrowse.menu"/>
         <item screen="afm_Event.browse" caption="msg://ru.surin.amfootmanager.screen.event/eventBrowse.menu"/>
+        <item screen="afm_Training.browse" caption="msg://ru.surin.amfootmanager.screen.training/trainingBrowse.menu"/>
+        <item screen="afm_Match.browse" caption="msg://ru.surin.amfootmanager.screen.match/matchBrowse.menu"/>
     </menu>
     <menu id="handbook" caption="msg://ru.surin.amfootmanager/menu.handbook" insertBefore="application">
         <item screen="afm_Position.browse" caption="msg://ru.surin.amfootmanager.screen.position/positionBrowse.menu"/>
