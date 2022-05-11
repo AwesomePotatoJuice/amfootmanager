@@ -10,7 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.UUID;
-
+//some random comment
 @JmixEntity
 @Table(name = "AFM_POSITION")
 @Entity(name = "afm_Position")
