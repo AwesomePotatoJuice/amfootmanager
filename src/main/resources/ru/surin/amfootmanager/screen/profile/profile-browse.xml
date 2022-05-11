@@ -13,6 +13,7 @@
             <loader id="profilesDl">
                 <query>
                     <![CDATA[select e from afm_Profile e]]>
+
                 </query>
             </loader>
         </collection>

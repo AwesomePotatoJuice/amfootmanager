@@ -6,39 +6,21 @@ import io.jmix.core.entity.annotation.OnDeleteInverse;
 import io.jmix.core.metamodel.annotation.Composition;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Version;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-@Getter
-@Setter
 @JmixEntity
 @Table(name = "AFM_PROFILE", indexes = {
         @Index(name = "IDX_PROFILE_TEAM_ID", columnList = "TEAM_ID"),
         @Index(name = "IDX_PROFILE_ROLE_ID", columnList = "ROLE"),
-        @Index(name = "IDX_PROFILE_USER_ID", columnList = "USER_ID")
+        @Index(name = "IDX_PROFILE_USER_ID", columnList = "USER_ID", unique = true)
 })
 @Entity(name = "afm_Profile")
 public class Profile {
@@ -109,8 +91,49 @@ public class Profile {
     @Column(name = "CREATED_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
+
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "profile")
     private PlayerCard playerCard;
+
+    public UUID getId() {
+        return id;
+    }
+
+    public List<Status> getStatus() {
+        return status;
+    }
+
+    public List<Position> getPosition() {
+        return position;
+    }
+
+    public ProfileType getRole() {
+        return role == null ? null : ProfileType.fromId(role);
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
 
     public PlayerCard getPlayerCard() {
         return playerCard;
@@ -166,5 +189,45 @@ public class Profile {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public void setStatus(List<Status> status) {
+        this.status = status;
+    }
+
+    public void setPosition(List<Position> position) {
+        this.position = position;
+    }
+
+    public void setRole(ProfileType role) {
+        this.role = role == null ? null : role.getId();
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 }
