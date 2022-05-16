@@ -2,6 +2,26 @@
 <project version="4">
   <component name="JmixDataStoreSettingsManager">
     <moduleSettings>
+      <entry key="amfootmanager.main">
+        <ModuleSettings>
+          <option name="dataStoreOptions">
+            <map>
+              <entry key="main">
+                <value>
+                  <DataStoreSettings>
+                    <option name="generateDdlType" value="CREATE_AND_UPDATE" />
+                    <option name="masterUrl" value="jdbc:postgresql://localhost/postgres" />
+                    <option name="nameLengthMode" value="POSTGRES" />
+                    <option name="supportedTypes">
+                      <option value="postgres" />
+                    </option>
+                  </DataStoreSettings>
+                </value>
+              </entry>
+            </map>
+          </option>
+        </ModuleSettings>
+      </entry>
       <entry key="ru.surin.amfootmanager.main">
         <ModuleSettings>
           <option name="dataStoreOptions">

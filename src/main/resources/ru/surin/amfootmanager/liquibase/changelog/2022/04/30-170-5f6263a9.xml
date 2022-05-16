@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="afm">
+        <createTable tableName="AFM_MATCH_TEAM_LINK">
+            <column name="MATCH_ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_AFM_MATCH_TEAM_LINK"/>
+            </column>
+            <column name="TEAM_ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_AFM_MATCH_TEAM_LINK"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="2" author="afm">
+        <addForeignKeyConstraint baseColumnNames="MATCH_ID" baseTableName="AFM_MATCH_TEAM_LINK"
+                                 constraintName="FK_AFMMATTEA_ON_MATCH" referencedColumnNames="ID"
+                                 referencedTableName="AFM_EVENT"/>
+    </changeSet>
+    <changeSet id="3" author="afm">
+        <addForeignKeyConstraint baseColumnNames="TEAM_ID" baseTableName="AFM_MATCH_TEAM_LINK"
+                                 constraintName="FK_AFMMATTEA_ON_TEAM" referencedColumnNames="ID"
+                                 referencedTableName="AFM_TEAM"/>
+    </changeSet>
+    <changeSet id="4" author="afm">
+        <dropColumn columnName="opponent" tableName="afm_event"/>
+    </changeSet>
+    <changeSet id="5" author="afm">
+        <dropNotNullConstraint columnDataType="varchar(255)" columnName="TRAINING_PROGRAM" tableName="AFM_EVENT"/>
+    </changeSet>
+</databaseChangeLog>

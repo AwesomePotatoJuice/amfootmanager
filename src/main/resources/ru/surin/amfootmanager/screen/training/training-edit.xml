@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window" xmlns:c="http://jmix.io/schema/ui/jpql-condition"
+        caption="msg://trainingEdit.caption"
+        focusComponent="form">
+    <data>
+        <instance id="trainingDc"
+                  class="ru.surin.amfootmanager.entity.Training">
+            <fetchPlan extends="_base">
+                <property name="team" fetchPlan="_base">
+                    <property name="profiles" fetchPlan="_instance_name">
+                        <property name="position" fetchPlan="_base"/>
+                        <property name="role"/>
+                    </property>
+                </property>
+                <property name="profiles">
+                    <property name="name"/>
+                    <property name="role"/>
+                </property>
+            </fetchPlan>
+            <loader/>
+        </instance>
+        <collection id="profilesDc" class="ru.surin.amfootmanager.entity.Profile">
+            <fetchPlan extends="_base"/>
+            <loader id="profilesDl">
+                <query>
+                    <![CDATA[select e from afm_Profile e]]>
+                    <condition>
+                        <and>
+                            <c:jpql>
+                                <c:where> e.team = :team </c:where>
+                            </c:jpql>
+                        </and>
+                    </condition>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="windowCommitAndClose" caption="msg:///actions.Ok"
+                icon="EDITOR_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="windowClose"
+                caption="msg:///actions.Close"
+                icon="EDITOR_CANCEL"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout spacing="true" expand="editActions">
+        <form id="form" dataContainer="trainingDc">
+            <column width="350px">
+                <textField id="topicField" property="topic"/>
+                <textField id="baseField" property="base"/>
+                <dateField id="startDateField" property="startDate"/>
+                <timeField id="durationField" property="duration"/>
+                <entityPicker id="teamField" property="team">
+                    <actions>
+                        <action id="entityLookup" type="entity_lookup"/>
+                        <action id="entityClear" type="entity_clear"/>
+                    </actions>
+                </entityPicker>
+                <textField id="training_programField" property="training_program"/>
+                <twinColumn id="twinColumn" addAllBtnEnabled="true"
+                            optionsContainer="profilesDc" dataContainer="trainingDc"/>
+                //TODO https://docs.jmix.io/jmix/ui/vcl/components/twin-column.html
+
+
+            </column>
+            <column/>
+        </form>
+
+        <hbox id="editActions" spacing="true" align="TOP_RIGHT">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="closeBtn" action="windowClose"/>
+            <dataGrid id="profilesTable" height="100px" width="200px" dataContainer="profilesDc">
+                <actions>
+                    <action id="add" type="add"/>
+                    <action id="remove" type="remove"/>
+                </actions>
+                <buttonsPanel alwaysVisible="true">
+                    <button id="profilesTableAddBtn" action="profilesTable.add"/>
+                    <button id="profilesTableRemoveBtn" action="profilesTable.remove"/>
+                </buttonsPanel>
+                <columns>
+                    <column id="name" property="name"/>
+                    <column id="role" property="role"/>
+                </columns>
+            </dataGrid>
+        </hbox>
+    </layout>
+</window>
