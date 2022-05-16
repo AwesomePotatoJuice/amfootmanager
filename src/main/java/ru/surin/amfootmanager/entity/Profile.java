@@ -55,8 +55,11 @@ public class Profile {
     @OneToMany(mappedBy = "currentOwner")
     private List<Equipment> equipment;
 
-    @Column(name = "ATTENDANCE")
-    private String attendance;
+    @JoinTable(name = "AFM_PROFILE_TRAINING_LINK",
+            joinColumns = @JoinColumn(name = "PROFILE_ID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "TRAINING_ID", referencedColumnName = "ID"))
+    @ManyToMany
+    private List<Training> attendance;
 
     @Column(name = "TRAUMAS")
     private String traumas;
@@ -112,14 +115,6 @@ public class Profile {
 
     public void setTraumas(String traumas) {
         this.traumas = traumas;
-    }
-
-    public String getAttendance() {
-        return attendance;
-    }
-
-    public void setAttendance(String attendance) {
-        this.attendance = attendance;
     }
 
     public List<Equipment> getEquipment() {
