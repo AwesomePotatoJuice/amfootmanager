@@ -18,7 +18,7 @@ public enum ProfileType implements EnumClass<String> {
         this.id = value;
     }
 
-    public String getId() {
+    public String getId(){
         return id;
     }
 

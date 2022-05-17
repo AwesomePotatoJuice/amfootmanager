@@ -30,7 +30,7 @@ public class TeamCreate extends StandardEditor<Team> {
     private DataManager dataManager;
 
     @Subscribe
-    public void onAfterCommitChanges(AfterCommitChangesEvent event) {
+    public void onBeforeCommitChanges(AfterCommitChangesEvent event) {
         final Profile profile;
         final User currentUser = getCurrentUser();
         if (currentUser.getProfile() != null) {
@@ -39,8 +39,9 @@ public class TeamCreate extends StandardEditor<Team> {
             profile = dataManager.create(Profile.class);
         }
         profile.setTeam(getEditedEntity());
-        profile.setRole(ProfileType.COACH.getId());
+        profile.setRole(ProfileType.COACH);
         profile.setUser(currentUser);
+        profile.setName(currentUser.getDisplayName());
         currentUser.setProfile(profile);
         dataManager.save(currentUser);
         notifications.create().withCaption(messages.getMessage(getClass(), "teamToProfileAssignment")).show();

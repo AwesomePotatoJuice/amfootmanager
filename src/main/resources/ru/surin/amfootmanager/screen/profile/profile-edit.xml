@@ -42,14 +42,14 @@
                     <textField id="debtField" property="debt"/>
                     <textField id="attendanceField" property="attendance"/>
                     <textField id="traumasField" property="traumas"/>
-                    <textField id="roleField" property="role"/>
+                    <comboBox id ="roleField" property="role"/>
                     <entityPicker id="userField" property="user">
                         <actions>
                             <action id="entityOpenComposition" type="entity_openComposition"/>
                             <action id="entityClear" type="entity_clear"/>
                         </actions>
                     </entityPicker>
-                    <entityPicker id="teamField" property="team">
+                    <entityPicker id="teamField" property="team" dataContainer="profileDc" editable="false">
                         <actions>
                             <action id="entityLookup" type="entity_lookup"/>
                             <action id="entityClear" type="entity_clear"/>

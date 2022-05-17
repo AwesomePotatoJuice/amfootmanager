@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://jmix.io/schema/ui/window"
+        xmlns:c="http://jmix.io/schema/ui/jpql-condition">
+
         caption="msg://teamEdit.caption"
         focusComponent="form">
     <data>
@@ -9,10 +11,22 @@
             <loader/>
         </instance>
         <collection id="profilesDc" class="ru.surin.amfootmanager.entity.Profile">
-            <fetchPlan extends="_base"/>
+            <fetchPlan extends="_base">
+                <property name="team" fetchPlan="_base"/>
+            </fetchPlan>
             <loader id="profilesDl">
                 <query>
-                    <![CDATA[select e from afm_Profile e]]>
+                    <![CDATA[select e  from afm_Profile e]]>
+                    <condition>
+                        <and>
+                        <c:jpql>
+                            <c:where> e.team = :team </c:where>
+                        </c:jpql>
+                        <c:jpql>
+                            <c:where> e.role = :role </c:where>
+                        </c:jpql>
+                        </and>
+                    </condition>
                 </query>
             </loader>
         </collection>
@@ -41,7 +55,8 @@
                     </column>
                 </form>
             </tab>
-            <tab caption="msg://teamEdit.profilesTab" id="tab_2" spacing="true">
+            <tab caption="msg://teamEdit.profilesTab"
+                 id="tab_2" spacing="true" margin="true">
                 <dataGrid id="profilesTable" width="100%" dataContainer="profilesDc">
                     <actions>
                         <action id="add" type="add"/>
@@ -65,6 +80,7 @@
                         <column id="debt" property="debt"/>
                         <column id="equipment" property="equipment"/>
                         <column id="traumas" property="traumas"/>
+                        <column id="role" property="role"/>
                     </columns>
 
                 </dataGrid>
