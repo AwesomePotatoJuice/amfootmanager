@@ -39,7 +39,7 @@ public class TeamCreate extends StandardEditor<Team> {
             profile = dataManager.create(Profile.class);
         }
         profile.setTeam(getEditedEntity());
-        profile.setRole(ProfileType.COACH);
+        profile.setRole("Coach");
         profile.setUser(currentUser);
         profile.setName(currentUser.getDisplayName());
         currentUser.setProfile(profile);

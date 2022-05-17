@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window" xmlns:c="http://jmix.io/schema/ui/jpql-condition"
+        caption="msg://rosterEdit.caption"
+        focusComponent="form">
+    <data>
+        <instance id="rosterDc"
+                  class="ru.surin.amfootmanager.entity.Roster">
+            <fetchPlan extends="_base">
+                <property name="center" fetchPlan="_instance_name">
+                    <property name="traumas"/>
+                    <property name="role"/>
+                </property>
+                <property name="quarterback" fetchPlan="_instance_name">
+                    <property name="traumas"/>
+                    <property name="role"/>
+                </property>
+            </fetchPlan>
+            <loader/>
+        </instance>
+        <collection id="profilesDc" class="ru.surin.amfootmanager.entity.Profile"
+                    fetchPlan="_base">
+            <loader id="profilesDl">
+                <query>
+                    <![CDATA[select e from afm_Profile e]]>
+                    <condition>
+                        <and>
+                            <c:jpql>
+                                <c:where> e.team = :team </c:where>
+                            </c:jpql>
+                        </and>
+                    </condition>
+                </query>
+            </loader>
+        </collection>
+
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="windowCommitAndClose" caption="msg:///actions.Ok"
+                icon="EDITOR_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="windowClose"
+                caption="msg:///actions.Close"
+                icon="EDITOR_CANCEL"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout spacing="true" expand="editActions">
+        <form id="form" dataContainer="rosterDc">
+            <column width="350px">
+
+                <entityComboBox id="centerCb" optionsContainer="profilesDc" property="center"/>
+                <entityComboBox id="quarterbackCb" optionsContainer="profilesDc" property="quarterback"/>
+                <entityPicker id="centerField" property="center">
+                    <actions>
+                        <action id="entityLookup" type="entity_lookup"/>
+                        <action id="entityClear" type="entity_clear"/>
+                    </actions>
+                </entityPicker>
+                <entityPicker id="quaterbackField" property="quarterback">
+                    <actions>
+                        <action id="entityLookup" type="entity_lookup"/>
+                        <action id="entityClear" type="entity_clear"/>
+                    </actions>
+                </entityPicker>
+            </column>
+        </form>
+        <hbox id="editActions" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+        <comboBox/>
+    </layout>
+</window>

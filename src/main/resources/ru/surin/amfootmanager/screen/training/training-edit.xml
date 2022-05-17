@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<window xmlns="http://jmix.io/schema/ui/window" xmlns:c="http://jmix.io/schema/ui/jpql-condition"
+<window xmlns="http://jmix.io/schema/ui/window"
+        xmlns:c="http://jmix.io/schema/ui/jpql-condition"
         caption="msg://trainingEdit.caption"
         focusComponent="form">
     <data>
@@ -64,8 +65,11 @@
                     </actions>
                 </entityPicker>
                 <textField id="training_programField" property="training_program"/>
-                <twinColumn id="twinColumn" addAllBtnEnabled="true"
-                            optionsContainer="profilesDc" dataContainer="trainingDc"/>
+                <twinColumn id="twinColumn"
+                            addAllBtnEnabled="true"
+                            optionsContainer="profilesDc"
+                />
+
                 //TODO https://docs.jmix.io/jmix/ui/vcl/components/twin-column.html
 
 

@@ -4,7 +4,18 @@ import io.jmix.core.entity.annotation.JmixGeneratedValue;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -108,7 +119,8 @@ public class Event {
     public void preUpdatingEndDate() {
         endDate = calculatedEndTime(startDate, duration);
     }
-    public static LocalDateTime calculatedEndTime(LocalDateTime startDate, Date duration){
+
+    public static LocalDateTime calculatedEndTime(LocalDateTime startDate, Date duration) {
         return startDate.plusHours(duration.getHours()).plusMinutes(duration.getMinutes());
     }
 

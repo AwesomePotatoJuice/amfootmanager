@@ -6,12 +6,27 @@ import io.jmix.core.entity.annotation.OnDeleteInverse;
 import io.jmix.core.metamodel.annotation.Composition;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
+import liquibase.pro.packaged.E;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Version;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -55,7 +70,7 @@ public class Profile {
             joinColumns = @JoinColumn(name = "PROFILE_ID", referencedColumnName = "ID"),
             inverseJoinColumns = @JoinColumn(name = "TRAINING_ID", referencedColumnName = "ID"))
     @ManyToMany
-    private List<Training> attendance;
+    private List<Event> attendance;
 
     @Column(name = "TRAUMAS")
     private String traumas;
@@ -97,6 +112,10 @@ public class Profile {
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "profile")
     private PlayerCard playerCard;
+
+    public List<Event> getAttendance() {
+        return attendance;
+    }
 
     public UUID getId() {
         return id;
@@ -182,6 +201,10 @@ public class Profile {
         return user;
     }
 
+    public void setAttendance(List<Event> attendance) {
+        this.attendance = attendance;
+    }
+
     public void setUser(User user) {
         this.user = user;
     }
@@ -200,6 +223,10 @@ public class Profile {
 
     public void setRole(ProfileType role) {
         this.role = role == null ? null : role.getId();
+    }
+
+    public void setRole(String s) {
+        this.role = s;
     }
 
     public void setTeam(Team team) {
